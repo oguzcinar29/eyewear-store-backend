@@ -56,3 +56,50 @@ export const createProduct = async (req: Request, res: Response) => {
     return res.status(500).send({ message: "Oppsss! Something went wrong." });
   }
 };
+
+export const getSingleProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    await connectToDatabase();
+    const product = await Product.findById(id);
+    return res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Error" });
+  }
+};
+
+export const getPrevNextProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    await connectToDatabase();
+    const products = await Product.find();
+    const findProductIndex = products.findIndex(
+      (item: any) => item._id.toString() === id
+    );
+
+    if (findProductIndex + 1 < products.length && findProductIndex - 1 >= 0) {
+      return res.status(200).json({
+        prevProduct: products[findProductIndex - 1],
+        nextProduct: products[findProductIndex + 1],
+      });
+    } else {
+      if (findProductIndex + 1 === products.length) {
+        return res.status(200).json({
+          prevProduct: products[findProductIndex - 1],
+          nextProduct: products[0],
+        });
+      }
+      if (findProductIndex - 1 < 0) {
+        return res.status(200).json({
+          prevProduct: products[products.length - 1],
+          nextProduct: products[findProductIndex + 1],
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Error" });
+  }
+};
