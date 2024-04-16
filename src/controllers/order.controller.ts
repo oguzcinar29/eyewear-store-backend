@@ -71,6 +71,8 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
       return res.status(500).json({ message: "Error creating stripe session" });
     }
     await newOrder.save();
+    card.product = [];
+    await Card.findOneAndReplace({ auth: { guestId } }, card);
     res.json({ url: session.url });
   } catch (err: any) {
     console.log(err);
