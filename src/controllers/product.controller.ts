@@ -4,14 +4,7 @@ import Product from "../models/product";
 
 export const deleteProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
-  try {
-    await connectToDatabase();
-    await Product.findByIdAndDelete(id);
-    return res.status(200).json({ message: "Product has been deleted" });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Error" });
-  }
+  console.log(id);
 };
 
 export const getProducts = async (req: Request, res: Response) => {
