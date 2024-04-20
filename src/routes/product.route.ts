@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createProduct,
+  deleteProduct,
   getPrevNextProduct,
   getProducts,
   getSingleProduct,
@@ -14,5 +15,6 @@ route.get("/get-products", getProducts);
 route.patch("/update-product", updateProduct);
 route.get("/get-single-product/:id", getSingleProduct);
 route.get("/get-prev-next-product/:id", getPrevNextProduct);
+route.delete("delete-product/:id", deleteProduct);
 
 export default route;
