@@ -57,7 +57,21 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-export const updateProduct = async (req: Request, res: Response) => {};
+export const updateProduct = async (req: Request, res: Response) => {
+  console.log("hey");
+  const { productValues, _id } = req.body;
+  console.log(_id);
+  console.log(productValues);
+  try {
+    await connectToDatabase();
+    await Product.findByIdAndUpdate(_id, productValues);
+    const products = await Product.find();
+    return res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "error" });
+  }
+};
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
