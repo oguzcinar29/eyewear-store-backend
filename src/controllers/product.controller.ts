@@ -63,7 +63,8 @@ export const createProduct = async (req: Request, res: Response) => {
   try {
     await connectToDatabase();
     await Product.create({ ...req.body });
-    return res.status(201).send({ message: "OK" });
+    const products = await Product.find();
+    return res.status(201).send(products);
   } catch (err) {
     console.log(err);
     return res.status(500).send({ message: "Oppsss! Something went wrong." });
